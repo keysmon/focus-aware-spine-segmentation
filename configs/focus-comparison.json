@@ -1,0 +1,57 @@
+{
+  "folds": [
+    {
+      "test": "2",
+      "validation": "3",
+      "train": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "test": "3",
+      "validation": "6",
+      "train": [
+        "2",
+        "7"
+      ]
+    },
+    {
+      "test": "6",
+      "validation": "7",
+      "train": [
+        "2",
+        "3"
+      ]
+    },
+    {
+      "test": "7",
+      "validation": "2",
+      "train": [
+        "3",
+        "6"
+      ]
+    }
+  ],
+  "run_seconds": 10800,
+  "training": {
+    "seed": 435,
+    "epochs": 20,
+    "batches_per_epoch": 100,
+    "batch_size": 4,
+    "training_seconds": 900,
+    "patience": 5,
+    "learning_rate": 0.001,
+    "patch_size": 128,
+    "stride": 64,
+    "thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ]
+  },
+  "methods": {
+    "R1": 1,
+    "R2": 5
+  }
+}

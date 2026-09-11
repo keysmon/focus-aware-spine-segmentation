@@ -1,0 +1,22 @@
+# Local environments and generated output
+.venv/
+runs/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.DS_Store
+*.log
+
+# Local agent instructions, plans, and research scratch notes
+AGENTS.md
+CLAUDE.md
+.codex/
+.agents/
+docs/superpowers/
+docs/research/
+
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
