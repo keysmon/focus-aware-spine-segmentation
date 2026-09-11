@@ -31,7 +31,7 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('phase',choices=['audit','fit','evaluate','report'])
     parser.add_argument('--run',type=Path,required=True)
-    parser.add_argument('--data',type=Path,default=Path('.'))
+    parser.add_argument('--data',type=Path,default=Path('data'))
     parser.add_argument('--reference',type=Path,default=Path('runs/comparison-001'))
     parser.add_argument('--config',type=Path,default=Path('configs/focus-comparison.json'))
     args=parser.parse_args(); run=args.run

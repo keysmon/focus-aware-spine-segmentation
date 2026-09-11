@@ -1,11 +1,14 @@
 import numpy as np
-from project import generate_segmentation_map
+import hashlib
 from segmentation.classical import baseline, classical, CANDIDATES
 
 
+# Regression fixture from the original baseline on the fixed random stack.
+BASELINE_SHA256 = 'b2940d4ce42c8704fda34fd634c531b4803470dd2367675476665267275c7d5b'
+
 def test_adapter_preserves_existing_algorithm():
     x = np.random.default_rng(435).integers(0, 256, (3, 48, 48), dtype=np.uint8)
-    np.testing.assert_array_equal(baseline(x), generate_segmentation_map(x))
+    assert hashlib.sha256(baseline(x).tobytes()).hexdigest() == BASELINE_SHA256
     np.testing.assert_array_equal(classical(x, CANDIDATES[0]), baseline(x))
 
 

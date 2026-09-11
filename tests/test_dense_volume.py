@@ -1,7 +1,7 @@
 import numpy as np
 import torch
-from experiments.dense_volume import DenseVolumeUNet, DenseVolumeSampler
-from experiments.ordered_volume import VolumeUNet, VolumeSampler
+from segmentation.models.dense_volume import DenseVolumeUNet, DenseVolumeSampler
+from segmentation.models.ordered_volume import VolumeUNet, VolumeSampler
 
 
 def test_dense_output_preserves_center_and_trains_neighbor_planes():

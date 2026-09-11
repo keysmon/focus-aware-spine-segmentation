@@ -26,7 +26,7 @@ class VolumeUNet(nn.Module):
         self.decoders=nn.ModuleList([block(96,32),block(48,16),block(24,8)])
         self.output=nn.Conv3d(8,1,1)
 
-    def forward(self,x):
+    def forward_volume(self,x):
         if x.ndim!=4 or x.shape[1]!=9:
             raise ValueError('Expected N9HW ordered focal neighborhoods')
         x=x[:,None];skips=[]
@@ -41,7 +41,10 @@ class VolumeUNet(nn.Module):
             x=F.interpolate(x,size=skip.shape[-2:],mode='bilinear',align_corners=False)
             x=x.reshape(n,z,c,*skip.shape[-2:]).permute(0,2,1,3,4)
             x=decoder(torch.cat([x,skip],dim=1))
-        return self.output(x)[:,:,4]
+        return self.output(x)
+
+    def forward(self, x):
+        return self.forward_volume(x)[:, :, 4]
 
 
 class VolumeSampler(Sampler):

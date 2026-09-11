@@ -1,5 +1,5 @@
 import torch
-from experiments.tversky import loss_value
+from segmentation.models.tversky import loss_value
 
 
 def test_missing_foreground_costs_more_than_equal_false_positive():

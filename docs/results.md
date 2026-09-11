@@ -21,6 +21,6 @@ Experiments explored black-hat morphology, closing, opening, connected-component
 
 ## Scope of this release
 
-The repository includes original inputs and exploratory notebooks, comparison CLIs, model components, configuration and behavioral tests. Generated runs, fitted checkpoints, per-run scripts and local planning records are excluded. The checked-in CLIs implement the baseline and focus-aware comparisons, not a one-command reproduction of the final ensemble. The table records the completed local experiment; released weights are not available for independent replay.
+The repository includes paired inputs, comparison CLIs, model components, configuration and behavioral tests. Generated runs, fitted checkpoints, per-run scripts and local planning records are excluded. The checked-in CLIs implement the baseline and focus-aware comparisons, not a one-command reproduction of the final ensemble. The table records the completed local experiment; released weights are not available for independent replay.
 
 Only four stacks were available and repeatedly informed development. These scores do not establish performance on independent acquisitions. Validation-only and label-assisted diagnostic scores must not be presented as four-stack results. Additional untouched data would be needed to assess generalization.

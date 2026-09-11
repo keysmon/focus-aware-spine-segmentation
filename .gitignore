@@ -20,3 +20,12 @@ docs/research/
 .env
 .env.*
 !.env.example
+
+# Archived local research files
+/experiments/
+/*.tiff
+/*.ipynb
+/*.jpg
+/*.png
+/project.py
+/data_import.py

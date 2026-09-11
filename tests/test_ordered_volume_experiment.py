@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from experiments.ordered_volume import VolumeUNet, VolumeSampler, predict_stack
+from segmentation.models.ordered_volume import VolumeUNet, VolumeSampler, predict_stack
 from segmentation.focus.data import Sampler
 
 

@@ -1,5 +1,5 @@
 import torch
-from experiments.attention_focus import AttentionFocusUNet, SkipGate
+from segmentation.models.attention_focus import AttentionFocusUNet, SkipGate
 from segmentation.focus.model import FocusUNet
 
 

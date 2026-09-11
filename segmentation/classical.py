@@ -2,7 +2,6 @@
 import cv2
 import numpy as np
 from scipy.ndimage import label
-from project import generate_segmentation_map
 from segmentation.metrics import evaluate
 
 CANDIDATES = [dict(name='C0', normalize=False, adaptive=False, cleanup=False),
@@ -12,7 +11,7 @@ CANDIDATES = [dict(name='C0', normalize=False, adaptive=False, cleanup=False),
 
 
 def baseline(images):
-    return generate_segmentation_map(images)
+    return _segment(images)
 
 
 def normalize(images):
@@ -33,7 +32,11 @@ def classical(images, config):
         result = baseline(x)
         result[np.ptp(x, axis=(1, 2)) == 0] = 0
         return result
-    # Reproduce the baseline focus projection and object restriction.
+    return _segment(x, adaptive=True, cleanup=config['cleanup'], suppress_constant=True)
+
+
+def _segment(x, adaptive=False, cleanup=False, suppress_constant=False):
+    # Select the sharpest slice at each pixel to form the object mask.
     gradients = np.asarray([np.abs(cv2.Laplacian(a, cv2.CV_64F, ksize=1)) for a in x])
     focus = np.take_along_axis(x, gradients.argmax(axis=0)[None], axis=0)[0]
     _, inv = cv2.threshold(cv2.medianBlur(focus, 3), 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
@@ -46,14 +49,17 @@ def classical(images, config):
     object_mask = cv2.morphologyEx(object_mask, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5)))
     result = []
     for frame, grad in zip(x, gradients):
-        if np.ptp(frame) == 0:
+        if suppress_constant and np.ptp(frame) == 0:
             result.append(np.zeros_like(frame)); continue
         mask = ((grad.astype(np.uint8) >= 20) & (object_mask != 0)).astype(np.uint8) * 255
         density = cv2.GaussianBlur(mask, (19, 19), 15)
         density = cv2.bitwise_and(density, density, mask=object_mask)
-        pred = cv2.adaptiveThreshold(density, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2)
-        pred[object_mask == 0] = 0
-        if config['cleanup']:
+        if adaptive:
+            pred = cv2.adaptiveThreshold(density, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2)
+            pred[object_mask == 0] = 0
+        else:
+            _, pred = cv2.threshold(density, 10, 255, cv2.THRESH_BINARY)
+        if cleanup:
             pred = cv2.morphologyEx(pred, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3)))
             labels, _ = label(pred != 0)
             counts = np.bincount(labels.ravel()); counts[0] = 0
